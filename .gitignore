@@ -1,3 +1,5 @@
 data/process
 data/tokenizer
 data/pretrain
+__pycache__
+ft/weights/*.pt
