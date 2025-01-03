@@ -7,7 +7,7 @@ from tqdm import tqdm
 from transformers import get_linear_schedule_with_warmup
 
 
-class Trainer:
+class Predicter:
     def __init__(self, model, args):
         self.model = model
         self.args = args
@@ -98,11 +98,9 @@ class Trainer:
         # 保存最佳模型
         best_model_path = os.path.join(
             self.weights_dir,
-            f'{self.args.alias}_{self.timestamp}'
+            f'{self.args.alias}_{self.timestamp}.pt'
         )
-        #torch.save(best_model_state, best_model_path)
-        #torch.save(self.model, best_model_path)
-        self.model.save_pretrained(best_model_path)
+        torch.save(best_model_state, best_model_path)
         print(f'最佳模型已保存到: {best_model_path}')
 
         return best_val_loss, best_val_acc

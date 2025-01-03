@@ -9,6 +9,7 @@ from config import get_args
 from dataset import TextClassificationDataset
 from model import BertClassifier
 from trainer import Trainer
+from predicter import Predicter
 
 
 def main():
@@ -69,17 +70,23 @@ def main():
         batch_size=args.batch_size
     )
 
-    # 初始化模型
-    model = BertClassifier(args.model_name, args.num_classes)
-    model = model.to(args.device)
-
-    # 训练模型
-    trainer = Trainer(model, args)
-    best_val_loss, best_val_acc = trainer.train(train_dataloader, val_dataloader)
-    print(f'Best validation loss: {best_val_loss:.4f}, accuracy: {best_val_acc:.4f}')
+    # #初始化模型
+    # model = BertClassifier(args.model_name, args.num_classes)
+    # model = model.to(args.device)
+    # # 训练模型
+    # trainer = Trainer(model, args)
+    # best_val_loss, best_val_acc = trainer.train(train_dataloader, val_dataloader)
+    # print(f'Best validation loss: {best_val_loss:.4f}, accuracy: {best_val_acc:.4f}')
 
     # 预测测试集
-    predictions = trainer.predict(test_dataloader)
+    model = BertClassifier.from_pretrained(
+        model_name="roberta-base",
+        num_classes=args.num_classes,
+        save_directory="weights/bert-base-uncased_20250103_234745"
+    )
+    model = model.to(args.device)
+    predicter = Predicter(model, args)
+    predictions = predicter.predict(test_dataloader)
 
     print("\n=== Done. ===")
 
